@@ -42,16 +42,16 @@ class Support():
         dlglyt.addWidget(sep)
 
         addw('h','Código fuente',dlglyt)
-        gitlab = QPushButton('https://github.com/dgabrielsl/deskpy_smart')
+        gitlab = QPushButton('https://github.com/dgabrielsl/deskpylab_smart_fh')
         gitlab.setStyleSheet('padding: 12px; background: #24B; color: #FFF; font-size: 16px; border: none; border-radius: 5px;')
         gitlab.setCursor(Qt.CursorShape.PointingHandCursor)
-        gitlab.clicked.connect(lambda:webbrowser.open('https://github.com/dgabrielsl/deskpy_smart'))
+        gitlab.clicked.connect(lambda:webbrowser.open('https://github.com/dgabrielsl/deskpylab_smart_fh/tree/master'))
         dlglyt.addWidget(gitlab)
         dlglyt.addStretch()
         dialog.exec()
 
     def get_updt(self):
-        webbrowser.open('https://github.com/dgabrielsl/deskpy_smart')
+        webbrowser.open('https://github.com/dgabrielsl/deskpylab_smart_fh/tree/master')
 
     def get_lstf(self):
         try: os.startfile(self.sys_path.text())

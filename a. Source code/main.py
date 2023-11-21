@@ -1,6 +1,6 @@
 import os
 import sys
-from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QToolBar, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QPlainTextEdit, QFileDialog
+from PyQt6.QtWidgets import QApplication, QMainWindow, QWidget, QToolBar, QLabel, QVBoxLayout, QHBoxLayout, QPushButton, QLineEdit, QPlainTextEdit, QFileDialog, QStyle
 from PyQt6.QtGui import QAction, QIcon
 from PyQt6.QtCore import Qt
 from plyer import notification
@@ -17,7 +17,7 @@ class Main(QMainWindow):
         self.show()
 
     def init(self):
-        self.setWindowIcon(QIcon('icon.ico'))
+        self.setWindowIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_ComputerIcon)))
         self.setWindowTitle('DeskPy')
         self.setMinimumWidth(900)
         self.setMinimumHeight(500)
@@ -26,9 +26,9 @@ class Main(QMainWindow):
         toolbar.setMovable(False)
         self.addToolBar(toolbar)
 
-        tb_docs = QAction(QIcon('documentation.ico'), 'Documentación', self)         # tb: Go to github documentation page.
-        tb_updt = QAction(QIcon('update.ico'), 'Buscar actualizaciones', self)       # tb: Search for updates by web-scrapping.
-        tb_lstf = QAction(QIcon('folder.ico'), 'Ir al directorio de trabajo', self)  # tb: Open last folder proccesed.
+        tb_docs = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogContentsView)), 'Documentación', self)         # tb: Go to github documentation page.
+        tb_updt = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)), 'Buscar actualizaciones', self)       # tb: Search for updates by web-scrapping.
+        tb_lstf = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DirLinkIcon)), 'Ir al directorio de trabajo', self)  # tb: Open last folder proccesed.
 
         tb_docs.setShortcuts(['F1','Ctrl+H'])
         tb_updt.setShortcuts(['F2','Ctrl+U'])
@@ -69,7 +69,7 @@ class Main(QMainWindow):
         self.sys_path.setReadOnly(True)
         self.sys_path.setPlaceholderText('Seleccionar directorio de trabajo')
         self.sys_lnch = QPushButton()
-        self.sys_lnch.setIcon(QIcon('path.ico'))
+        self.sys_lnch.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder)))
         self.sys_lnch.setCursor(Qt.CursorShape.PointingHandCursor)
         self.sys_lnch.clicked.connect(self.filedialog)
 
@@ -81,7 +81,7 @@ class Main(QMainWindow):
         self.editf_id.setPlaceholderText('Identificación')
         self.editf_id.setMaximumWidth(170)
         self.editf_id_bt = QPushButton()
-        self.editf_id_bt.setIcon(QIcon('backspace.ico'))
+        self.editf_id_bt.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowBack)))
         self.editf_id_bt.setCursor(Qt.CursorShape.PointingHandCursor)
         self.editf_id_bt.clicked.connect(self.clear_field_id)
 
@@ -89,7 +89,7 @@ class Main(QMainWindow):
         self.editf_fn.setPlaceholderText('Nombre y apellidos')
         self.editf_fn.setContentsMargins(9,0,0,0)
         self.editf_fn_bt = QPushButton()
-        self.editf_fn_bt.setIcon(QIcon('backspace.ico'))
+        self.editf_fn_bt.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_ArrowBack)))
         self.editf_fn_bt.setCursor(Qt.CursorShape.PointingHandCursor)
         self.editf_fn_bt.clicked.connect(self.clear_field_fn)
 
@@ -104,21 +104,21 @@ class Main(QMainWindow):
         wrap_2.addWidget(self.editf_fn_bt)
 
         self.crud_read = QPushButton('Leer')
-        self.crud_read.setIcon(QIcon('read.ico'))
+        self.crud_read.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogDetailedView)))
         self.crud_read.setStyleSheet('padding: 10px; border: 1px solid #CCC; border-radius: 2px;')
         self.crud_read.setCursor(Qt.CursorShape.PointingHandCursor)
         self.crud_read.clicked.connect(self.read_next)
         self.crud_read.setDisabled(True)
 
         self.crud_create = QPushButton('Procesar')
-        self.crud_create.setIcon(QIcon('create.ico'))
+        self.crud_create.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_MediaSeekForward)))
         self.crud_create.setStyleSheet('padding: 10px; border: 1px solid #CCC; border-radius: 2px;')
         self.crud_create.setCursor(Qt.CursorShape.PointingHandCursor)
         self.crud_create.clicked.connect(self.fitem)
         self.crud_create.setDisabled(True)
 
         self.crud_auto = QPushButton('Auto')
-        self.crud_auto.setIcon(QIcon('auto.ico'))
+        self.crud_auto.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DialogApplyButton)))
         self.crud_auto.setStyleSheet('padding: 10px; border: 1px solid #CCC; border-radius: 2px;')
         self.crud_auto.setCursor(Qt.CursorShape.PointingHandCursor)
         self.crud_auto.clicked.connect(self.auto_pilot)
@@ -182,6 +182,7 @@ class Main(QMainWindow):
             self.crud_create.setDisabled(False)
             self.textarea.appendPlainText(f'\n{self.result_id} {self.result_fn} expediente listo para procesar...')
         except IndexError as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',timeout = 5)
+        except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n{e}.',timeout = 5)
 
     def fitem(self):
             try:
