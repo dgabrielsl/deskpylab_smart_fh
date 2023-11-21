@@ -51,7 +51,7 @@ class Support():
         dialog.exec()
 
     def get_updt(self):
-        webbrowser.open('https://github.com/dgabrielsl/deskpylab_smart_fh/tree/master')
+        webbrowser.open('https://github.com/dgabrielsl/deskpylab_smart_fh/tree/master/b.%20Software')
 
     def get_lstf(self):
         try: os.startfile(self.sys_path.text())
