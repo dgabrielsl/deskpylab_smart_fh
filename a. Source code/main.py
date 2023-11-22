@@ -170,7 +170,7 @@ class Main(QMainWindow):
             self.counter = 0
             self.textarea.appendPlainText('Directorio escaneado correctamente.')
             self.textarea.appendPlainText(f'Sub-directorios a procesar: {len(self.tree)}')
-        except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\nLa ruta o carpeta a escanear no existe o no ha sido configurada, por favor configure una ruta válida.',timeout = 10)
+        except Exception as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\nLa ruta o carpeta a escanear no existe o no ha sido configurada, por favor configure una ruta válida.',timeout=10)
 
     def read_next(self):
         try:
@@ -181,8 +181,8 @@ class Main(QMainWindow):
             self.crud_read.setDisabled(True)
             self.crud_create.setDisabled(False)
             self.textarea.appendPlainText(f'\n{self.result_id} {self.result_fn} expediente listo para procesar...')
-        except IndexError as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',timeout = 5)
-        except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n{e}.',timeout = 5)
+        except IndexError as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',timeout=5)
+        except Exception as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\n{e}.',timeout=5)
 
     def fitem(self):
             try:
@@ -208,7 +208,7 @@ class Main(QMainWindow):
                     self.textarea.appendPlainText('\nDirectorio de carpetas completado.')
                     self.crud_read.setDisabled(True)
                     self.crud_auto.setDisabled(True)
-                    notification.notify(title = f'DeskPy',message = 'No hay más carpetas por procesar.',timeout = 5)
+                    notification.notify(title=f'DeskPy',message='No hay más carpetas por procesar.',timeout=5)
             except: self.textarea.appendPlainText('***No hay más carpetas por procesar***')
 
     def auto_pilot(self):
