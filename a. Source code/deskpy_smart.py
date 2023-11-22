@@ -56,7 +56,7 @@ class PDF():
             elif sz > 4: self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
             self._data_set = ''
             _pdf.close()
-        except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def pdf_srch_text(self)\nProcessing: self._data_set',timeout = 5)
+        except Exception as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\n.Function: def pdf_srch_text(self)\nProcessing: self._data_set',timeout=5)
 
     def app_deploy(self):
         self.id = self.editf_id.text()
@@ -66,6 +66,31 @@ class PDF():
         Util.pdf_make_merge(self)
         Util.pdf_from_pdf(self)
         try:
-            output_f = f'{self.sys_path.text()}{self.editf_id.text()} {self.editf_fn.text()}'
-            os.rename(self.working_folder,output_f)
-        except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def app_deploy(self)\nProcessing: os.rename(self.working_folder,output_f)',timeout = 5)
+            # if self.bt_sender == 'Uno':
+            #     output_f = self.working_folder.split('/')
+            #     output_f = output_f[:-2]
+            #     output_f = '/'.join(output_f)
+            #     output_f = f'{output_f}/{self.editf_id.text()} {self.editf_fn.text()}'
+            # elif self.bt_sender == 'Grupo': pass
+            # elif self.bt_sender == 'Todo':
+            #     output_f = f'{self.working_folder}/{self.editf_id.text()} {self.editf_fn.text()}'
+            #     print(f'self.working_folder: {self.working_folder}')
+            #     print(f'output_f: {output_f}')
+
+            # os.rename(self.working_folder,output_f)
+
+            if self.bt_sender == 'Uno':
+                output_f = self.working_folder.split('/')
+                output_f = output_f[:-2]
+                output_f = '/'.join(output_f)
+                output_f = f'{output_f}/{self.editf_id.text()} {self.editf_fn.text()}'
+                print(output_f)
+                os.rename(self.working_folder,output_f)
+                self.crud_read.setDisabled(True)
+                self.crud_create.setDisabled(True)
+                self.crud_auto.setDisabled(True)
+                notification.notify(title=f'DeskPy',message=f'Expediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',timeout=5)
+            elif self.bt_sender == 'Todo':
+                output_f = f'{self.sys_path.text()}{self.editf_id.text()} {self.editf_fn.text()}'
+                os.rename(self.working_folder,output_f)
+        except Exception as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\n.Function: def app_deploy(self)\nProcessing: os.rename(self.working_folder,output_f)',timeout=5)
