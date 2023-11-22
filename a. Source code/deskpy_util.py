@@ -10,11 +10,9 @@ class Util():
         self.ids_to_move = []
         self.wf_tree = os.listdir(self.working_folder)
         for leaf in self.wf_tree:
-            self.textarea.appendPlainText(f'\t>> {leaf}')
             _leaf = leaf.lower()
             # Formats supported: .png, .jpg, .jpeg, .svg, .gif, .webp, .bmp, .tif, .jfif
             if _leaf.__contains__('.png') or _leaf.__contains__('.jpg') or _leaf.__contains__('.jpeg') or _leaf.__contains__('.svg') or _leaf.__contains__('.gif') or _leaf.__contains__('.webp') or _leaf.__contains__('.bmp') or _leaf.__contains__('.tif') or _leaf.__contains__('.jfif'):
-                self.textarea.appendPlainText(f'\tConverting "{leaf}" image file to PDF...')
                 if _leaf.__contains__('id.') or _leaf.__contains__('id1') or _leaf.__contains__('id2'):self.ids_to_move.append(f'{self.working_folder}/{leaf}')
                 else:self.cleanner.append(f'{self.working_folder}/{leaf}')
                 _img = Image.open(f'{self.working_folder}/{leaf}')
@@ -28,25 +26,16 @@ class Util():
                     os.remove(c)
                     _c = c.split('/')
                     _c = _c[-1]
-                    self.textarea.appendPlainText(f'\tRemoving unnecesary files: "{_c}"...')
-                except Exception as e: self.textarea.appendPlainText(f'\t{e.__class__} / Can not remove this file: "{c}"')
+                except Exception as e: pass
 
     def build_up_folders(self):
-        try:
-            os.makedirs(f'{self.working_folder}/0. OTROS DOCUMENTOS')
-            self.textarea.appendPlainText('\t\tBuilding up folder >> ../0. OTROS DOCUMENTOS')
+        try: os.makedirs(f'{self.working_folder}/0. OTROS DOCUMENTOS')
         except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "0. OTROS DOCUMENTOS"',timeout = 5)
-        try:
-            os.makedirs(f'{self.working_folder}/1. INFORMACIÓN GENERAL')
-            self.textarea.appendPlainText('\t\tBuilding up folder >> ../1. INFORMACIÓN GENERAL')
+        try: os.makedirs(f'{self.working_folder}/1. INFORMACIÓN GENERAL')
         except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "1. INFORMACIÓN GENERAL"',timeout = 5)
-        try:
-            os.makedirs(f'{self.working_folder}/2. INFORMACIÓN PRODUCTO')
-            self.textarea.appendPlainText('\t\tBuilding up folder >> ../2. INFORMACIÓN PRODUCTO')
+        try: os.makedirs(f'{self.working_folder}/2. INFORMACIÓN PRODUCTO')
         except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "2. INFORMACIÓN PRODUCTO"',timeout = 5)
-        try:
-            os.makedirs(f'{self.working_folder}/3. INFORMACIÓN FINANCIERA')
-            self.textarea.appendPlainText('\t\tBuilding up folder >> ../3. INFORMACIÓN FINANCIERA')
+        try: os.makedirs(f'{self.working_folder}/3. INFORMACIÓN FINANCIERA')
         except Exception as e: notification.notify(title = f'DeskPy',message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "3. INFORMACIÓN FINANCIERA"',timeout = 5)
 
     def pdf_make_merge(self):
@@ -143,13 +132,22 @@ class Util():
         except Exception as e: print(e)
         self.aux_a = 1
         self.aux_b = 1
+
+        # Additional docs (just rename and relocate).
         for r in self.relocate_pdf:
             _r = r.lower()
-            if _r.__contains__('buro') or _r.__contains__('buró') or _r.__contains__('gente'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/BURÓ {self.editf_id.text()} {self.editf_fn.text()}.pdf')
-            if _r.__contains__('firma'): os.rename(r,f'{self.working_folder}/0. OTROS DOCUMENTOS/FIRMA REPRESENTANTE LEGAL {self.editf_id.text()} {self.editf_fn.text()}.pdf')
-            if _r.__contains__('orden'):
+            if _r.__contains__('buro') or _r.__contains__('buró') or _r.__contains__('gente') or _r.__contains__('multim'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/BURÓ {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('firma'): os.rename(r,f'{self.working_folder}/0. OTROS DOCUMENTOS/FIRMA REPRESENTANTE LEGAL {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('form'): os.rename(r,f'{self.working_folder}/0. OTROS DOCUMENTOS/FORMULARIO MANUAL {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('rep') or _r.__contains__('fs'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/REPORTE ONFIDO {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('orden'):
                 os.rename(r,f'{self.working_folder}/3. INFORMACIÓN FINANCIERA/ORDEN PATRONAL {self.aux_a} {self.editf_id.text()} {self.editf_fn.text()}.pdf')
                 self.aux_a += 1
-            if _r.__contains__('origen'):
+            elif _r.__contains__('origen'):
                 os.rename(r,f'{self.working_folder}/3. INFORMACIÓN FINANCIERA/ORIGEN DE FONDOS {self.aux_b} {self.editf_id.text()} {self.editf_fn.text()}.pdf')
                 self.aux_b += 1
+            else:
+                _r_ = _r.split('/')
+                _r_ = _r_[-1]
+                _r_ = _r_.replace('.pdf','').upper()
+                os.rename(r,f'{self.working_folder}/{_r_} {self.editf_id.text()} {self.editf_fn.text()}.pdf')

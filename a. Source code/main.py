@@ -27,8 +27,8 @@ class Main(QMainWindow):
         self.addToolBar(toolbar)
 
         tb_docs = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogContentsView)), 'Documentación', self)         # tb: Go to github documentation page.
-        tb_updt = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)), 'Buscar actualizaciones', self)       # tb: Search for updates by web-scrapping.
-        tb_lstf = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DirLinkIcon)), 'Ir al directorio de trabajo', self)  # tb: Open last folder proccesed.
+        tb_updt = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_BrowserReload)), 'Buscar actualizaciones', self)         # tb: Search for updates by web-scrapping.
+        tb_lstf = QAction(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_DirLinkIcon)), 'Ir al directorio de trabajo', self)      # tb: Open last folder proccesed.
 
         tb_docs.setShortcuts(['F1','Ctrl+H'])
         tb_updt.setShortcuts(['F2','Ctrl+U'])
@@ -138,8 +138,8 @@ class Main(QMainWindow):
         wrap_3.setAlignment(Qt.AlignmentFlag.AlignCenter)
         wrap_3.setContentsMargins(0,20,0,0)
 
-        h3 = QLabel('Expedientes procesados:')
-        h3.setStyleSheet('margin: 10px 0; color: #888; font-weight: 400;')
+        self.h3 = QLabel('Expedientes procesados:')
+        self.h3.setStyleSheet('margin: 10px 0; color: #888; font-weight: 400;')
         self.textarea = QPlainTextEdit()
         self.textarea.setPlaceholderText('Ready to use...')
         self.textarea.setReadOnly(True)
@@ -147,7 +147,7 @@ class Main(QMainWindow):
         self.layout.addLayout(wrap_1)
         self.layout.addLayout(wrap_2)
         self.layout.addLayout(wrap_3)
-        self.layout.addWidget(h3)
+        self.layout.addWidget(self.h3)
         self.layout.addWidget(self.textarea)
         self.layout.addStretch()
 
@@ -190,6 +190,7 @@ class Main(QMainWindow):
                 subf = subf.split('/')
                 subf = f'../{subf[-3]}/{subf[-2]}/{subf[-1]}'
                 self.textarea.appendPlainText(f'\tProcesando... {self.counter+1}/{len(self.tree)} || {subf}')
+                self.h3.setText(f'Expedientes procesados ({self.counter+1}/{len(self.tree)}):')
                 self.counter += 1
                 self.crud_read.setDisabled(False)
                 self.crud_create.setDisabled(True)
