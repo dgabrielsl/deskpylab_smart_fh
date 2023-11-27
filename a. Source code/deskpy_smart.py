@@ -24,11 +24,6 @@ class PDF():
         for n in range(_length):
             _raw_text = _pages[n].extract_text().replace('\n',' ')
             _raw_text = _raw_text.lower()
-            print(n)
-            print(_raw_text)
-            print()
-            print()
-            print()
 
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
@@ -76,38 +71,30 @@ class PDF():
             self.result_fn = self._data_set_from_cicac[0]
             self.result_fn = self.result_fn.upper().replace('  ',' ')
             self.result_fn = self.result_fn.split(' ')
-
         except AttributeError:
             for kt in self._data_set_from_kyc:
                 _kt = kt.lower()
                 if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
                     self._data_set_from_kyc = kt
                     break
-
             self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
             self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
             self._data_set_from_kyc = self._data_set_from_kyc[1]
             self._data_set_from_kyc = self._data_set_from_kyc.lower()
-
             self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
             for rd in self._data_set_from_kyc:
                 x = re.search(r'\d{9,}', rd)
                 if x:
                     self.result_id = rd
                     break
-
             self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
             self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
             self._data_set_from_kyc = self._data_set_from_kyc[0]
             self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
             self._data_set_from_kyc = self._data_set_from_kyc[1:]
-
-
             self.result_fn = []
-
             for string in self._data_set_from_kyc:
                 if string.strip() != '': self.result_fn.append(string)
-
         sz = len(self.result_fn)
         if sz == 2: self.result_fn = self.result_fn.reverse()
         elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
@@ -115,11 +102,6 @@ class PDF():
         elif sz > 4: self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
         self.result_fn = self.result_fn.upper()
         _pdf.close()
-
-
-
-
-
 
     def app_deploy(self):
         self.id = self.editf_id.text()
