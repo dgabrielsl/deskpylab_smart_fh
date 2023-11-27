@@ -1,7 +1,7 @@
 import os
 import sys
 from PyQt6.QtWidgets import *
-from PyQt6.QtGui import QAction, QIcon
+from PyQt6.QtGui import *
 from PyQt6.QtCore import Qt
 from plyer import notification
 from deskpy_smart import PDF
@@ -73,7 +73,6 @@ class Main(QMainWindow):
         self.mul_fldr.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder)))
         self.mul_fldr.setCursor(Qt.CursorShape.PointingHandCursor)
         self.mul_fldr.clicked.connect(self.filedialog)
-        self.mul_fldr.setDisabled(True)
         self.sys_lnch = QPushButton('Todo')
         self.sys_lnch.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder)))
         self.sys_lnch.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -151,7 +150,15 @@ class Main(QMainWindow):
 
     def filedialog(self):
         self.bt_sender = self.sender().text()
-        self.workspace = QFileDialog.getExistingDirectory()
+
+
+        if self.bt_sender == 'Grupo':
+            self.workspace = QFileDialog()
+            self.workspace = self.workspace.QTreeView()
+
+
+
+        else: self.workspace = QFileDialog.getExistingDirectory()
         self.workspace += '/'
         if self.workspace == '/': self.workspace = ''
         self.sys_path.setText(self.workspace)
@@ -188,7 +195,7 @@ class Main(QMainWindow):
                 self.working_folder = self.tree[self.counter]
                 PDF.pdf_srch_text(self)
             self.editf_id.setText(self.result_id)
-            self.editf_fn.setText(self.result_fn)
+            self.editf_fn.setText(self.result_fn.upper())
             self.crud_read.setDisabled(True)
             self.crud_create.setDisabled(False)
             self.textarea.appendPlainText(f'\n{self.result_id} {self.result_fn} expediente listo para procesar...')

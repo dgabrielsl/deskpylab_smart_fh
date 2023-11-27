@@ -99,8 +99,9 @@ class PDF():
         if sz == 2: self.result_fn = self.result_fn.reverse()
         elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
         elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
-        elif sz > 4: self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
-        self.result_fn = self.result_fn.upper()
+        elif sz > 4:
+            self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
+            self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
         _pdf.close()
 
     def app_deploy(self):
