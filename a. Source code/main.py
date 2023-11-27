@@ -7,6 +7,8 @@ from plyer import notification
 from deskpy_smart import PDF
 from support import Support
 
+os.system('cls')
+
 class Main(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -19,7 +21,7 @@ class Main(QMainWindow):
         self.setWindowTitle('DeskPy')
         self.setMinimumWidth(900)
         self.setMinimumHeight(500)
-        self.showMaximized()
+        # self.showMaximized()
         toolbar = QToolBar()
         toolbar.setMovable(False)
         self.addToolBar(toolbar)
