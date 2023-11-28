@@ -55,4 +55,9 @@ class Support():
 
     def get_lstf(self):
         try: os.startfile(self.sys_path.text())
-        except Exception as e: notification.notify(title = f'DeskPy - Open last folder',message = f'Hint: {e.__class__}\nPor favor configure el directorio de trabajo primero.',timeout = 5)
+        except Exception as e:
+            notification.notify(
+                title = f'DeskPy - Open last folder',
+                message = f'Hint: {e.__class__}\nPor favor configure el directorio de trabajo primero.',
+                timeout = 5
+            )

@@ -12,15 +12,19 @@ class PDF():
         self.is_doc_cntr = []       # Contract.                     ✅ 2 pags.
         self.is_doc_scrt = []       # Sign's certification.         ✅ 2 pags.
         self.is_doc_unkn = []       # Possible unknown pages.       ✅ aux **pags.
+
         self.subtree = os.listdir(self.working_folder)
+
         for st in self.subtree:
             _st = st.lower()
             if _st.__contains__('aff'):
                 self.reading_doc = f'{self.working_folder}/{st}'
+
         _pdf = open(self.reading_doc, 'rb')
         _reader = PdfReader(_pdf)
         _pages = _reader.pages
         _length = _pages.__len__()
+
         for n in range(_length):
             _raw_text = _pages[n].extract_text().replace('\n',' ')
             _raw_text = _raw_text.lower()
@@ -62,55 +66,70 @@ class PDF():
                 if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
                     self._data_set_from_cicac = kt
                     break
+
             self._data_set_from_cicac = self._data_set_from_cicac.split(',')
             self._data_set_from_cicac[0] = self._data_set_from_cicac[0].replace('Yo ','').replace('yo ','')
+
             self.result_id = ''
+
             for char in self._data_set_from_cicac[1]:
                 n = char.isnumeric()
                 if n: self.result_id += char
+
             self.result_fn = self._data_set_from_cicac[0]
             self.result_fn = self.result_fn.upper().replace('  ',' ')
             self.result_fn = self.result_fn.split(' ')
+
         except AttributeError:
             for kt in self._data_set_from_kyc:
                 _kt = kt.lower()
                 if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
                     self._data_set_from_kyc = kt
                     break
+
             self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
             self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
             self._data_set_from_kyc = self._data_set_from_kyc[1]
             self._data_set_from_kyc = self._data_set_from_kyc.lower()
             self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
+
             for rd in self._data_set_from_kyc:
                 x = re.search(r'\d{9,}', rd)
                 if x:
                     self.result_id = rd
                     break
+
             self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
             self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
             self._data_set_from_kyc = self._data_set_from_kyc[0]
             self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
             self._data_set_from_kyc = self._data_set_from_kyc[1:]
+
             self.result_fn = []
+
             for string in self._data_set_from_kyc:
                 if string.strip() != '': self.result_fn.append(string)
+
         sz = len(self.result_fn)
+
         if sz == 2: self.result_fn = self.result_fn.reverse()
         elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
         elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
         elif sz > 4:
             self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
             self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
+
         _pdf.close()
 
     def app_deploy(self):
         self.id = self.editf_id.text()
         self.fn = self.editf_fn.text()
+
         Util.pdf_from_img(self)
         Util.build_up_folders(self)
         Util.pdf_make_merge(self)
         Util.pdf_from_pdf(self)
+
         try:
             if self.bt_sender == 'Uno':
                 output_f = self.working_folder.split('/')
@@ -122,8 +141,18 @@ class PDF():
                 self.crud_read.setDisabled(True)
                 self.crud_create.setDisabled(True)
                 self.crud_auto.setDisabled(True)
-                notification.notify(title=f'DeskPy',message=f'Expediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',timeout=5)
+                notification.notify(
+                    title = f'DeskPy',
+                    message = f'Expediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',
+                    timeout = 5
+                )
+
             elif self.bt_sender == 'Todo':
                 output_f = f'{self.sys_path.text()}{self.editf_id.text()} {self.editf_fn.text()}'
                 os.rename(self.working_folder,output_f)
-        except Exception as e: notification.notify(title=f'DeskPy',message=f'Hint: {e.__class__}\n.Function: def app_deploy(self)\nProcessing: os.rename(self.working_folder,output_f)',timeout=5)
+        except Exception as e:
+            notification.notify(
+                title = f'DeskPy',
+                message = f'Hint: {e.__class__}\n.Function: def app_deploy(self)\nProcessing: os.rename(self.working_folder,output_f)',
+                timeout = 5
+            )
