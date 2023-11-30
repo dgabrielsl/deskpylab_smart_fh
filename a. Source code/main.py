@@ -283,7 +283,11 @@ class Main(QMainWindow):
                     )
                     self.crud_read.setDisabled(True)
                     self.crud_auto.setDisabled(True)
-                    notification.notify(title=f'DeskPy',message='No hay más carpetas por procesar.',timeout=5)
+                    notification.notify(
+                        title = f'DeskPy',
+                        message = 'No hay más carpetas por procesar.',
+                        timeout = 5
+                    )
             except:
                 self.textarea.appendPlainText(
                     '***No hay más carpetas por procesar***'

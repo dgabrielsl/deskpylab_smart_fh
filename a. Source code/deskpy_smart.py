@@ -29,6 +29,10 @@ class PDF():
             _raw_text = _pages[n].extract_text().replace('\n',' ')
             _raw_text = _raw_text.lower()
 
+            # It is only displayed in a test environment (by console).
+            __raw_text = _pages[n].extract_text()
+            print(f'Page #: {n}\n{__raw_text}')
+
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'): self.is_doc_cons.append(n)
@@ -55,7 +59,8 @@ class PDF():
 
             # SIGN CERTIFICATION
             elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'): self.is_doc_scrt.append(n)
-            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('autenticado mediante') and _raw_text.__contains__('contenido a firmar disponible') and _raw_text.__contains__('url'): self.is_doc_scrt.append(n)
+            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('contenido a firmar') and _raw_text.__contains__('url'): self.is_doc_scrt.append(n)
+            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'): self.is_doc_scrt.append(n)
 
             # UNKNOWN PAGES.
             else: self.is_doc_unkn.append(n)
@@ -146,7 +151,6 @@ class PDF():
                     message = f'Expediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',
                     timeout = 5
                 )
-
             elif self.bt_sender == 'Todo':
                 output_f = f'{self.sys_path.text()}{self.editf_id.text()} {self.editf_fn.text()}'
                 os.rename(self.working_folder,output_f)
