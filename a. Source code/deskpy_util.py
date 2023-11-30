@@ -202,6 +202,7 @@ class Util():
 
         self.aux_a = 1
         self.aux_b = 1
+        self.aux_c = 1
 
         # Additional docs (just rename and relocate).
         for r in self.relocate_pdf:
@@ -209,14 +210,18 @@ class Util():
             if _r.__contains__('id.') or _r.__contains__('id1'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/ID {self.editf_id.text()} {self.editf_fn.text()}.pdf')
             elif _r.__contains__('buro') or _r.__contains__('buró') or _r.__contains__('gente') or _r.__contains__('multi'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/BURÓ {self.editf_id.text()} {self.editf_fn.text()}.pdf')
             elif _r.__contains__('firma'): os.rename(r,f'{self.working_folder}/0. OTROS DOCUMENTOS/FIRMA REPRESENTANTE LEGAL {self.editf_id.text()} {self.editf_fn.text()}.pdf')
-            elif _r.__contains__('form'): os.rename(r,f'{self.working_folder}/0. OTROS DOCUMENTOS/FORMULARIO MANUAL {self.editf_id.text()} {self.editf_fn.text()}.pdf')
             elif _r.__contains__('rep') or _r.__contains__('fs'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/REPORTE ONFIDO {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('sugef'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/SUGEF {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+            elif _r.__contains__('cita'): os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/CITA {self.editf_id.text()} {self.editf_fn.text()}.pdf')
             elif _r.__contains__('orden'):
                 os.rename(r,f'{self.working_folder}/3. INFORMACIÓN FINANCIERA/ORDEN PATRONAL {self.aux_a} {self.editf_id.text()} {self.editf_fn.text()}.pdf')
                 self.aux_a += 1
             elif _r.__contains__('origen'):
                 os.rename(r,f'{self.working_folder}/3. INFORMACIÓN FINANCIERA/ORIGEN DE FONDOS {self.aux_b} {self.editf_id.text()} {self.editf_fn.text()}.pdf')
                 self.aux_b += 1
+            elif _r.__contains__('form'):
+                os.rename(r,f'{self.working_folder}/1. INFORMACIÓN GENERAL/FORMULARIO MANUAL {self.aux_c} {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+                self.aux_c += 1
             else:
                 _r_ = _r.split('/')
                 _r_ = _r_[-1]

@@ -184,8 +184,13 @@ class Main(QMainWindow):
     def filedialog(self):
         self.bt_sender = self.sender().text()
 
-        self.workspace = QFileDialog.getExistingDirectory()
+        try:
+            self.last_path = os.environ.get('LAST_PATH')
+            self.workspace = QFileDialog.getExistingDirectory(dir=self.last_path)
+        except: self.workspace = QFileDialog.getExistingDirectory()
+
         self.workspace += '/'
+
         if self.workspace == '/': self.workspace = ''
         self.sys_path.setText(self.workspace)
 
@@ -193,6 +198,9 @@ class Main(QMainWindow):
 
         self.crud_read.setDisabled(False)
         self.crud_auto.setDisabled(False)
+        
+        try: print(self.workspace)
+        except: pass
 
         self.flist()
 
@@ -209,12 +217,11 @@ class Main(QMainWindow):
             if self.bt_sender == 'Uno':
                 self.textarea.appendPlainText('Expediente escaneado correctamente.')
                 self.textarea.appendPlainText(f'Procesando un expediente...')
-            elif self.bt_sender == 'Grupo':
-                self.textarea.appendPlainText('Grupo de expedientes escaneados correctamente.')
-                self.textarea.appendPlainText(f'Cantidad de expedientes seleccionados: {len(self.tree)}')
+                self.crud_auto.setDisabled(True)
             elif self.bt_sender == 'Todo':
                 self.textarea.appendPlainText('Directorio escaneado correctamente.')
                 self.textarea.appendPlainText(f'Sub-directorios a procesar: {len(self.tree)}')
+
         except Exception as e:
             notification.notify(
                 title =f'DeskPy',

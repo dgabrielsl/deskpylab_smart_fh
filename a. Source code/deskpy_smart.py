@@ -30,8 +30,8 @@ class PDF():
             _raw_text = _raw_text.lower()
 
             # It is only displayed in a test environment (by console).
-            __raw_text = _pages[n].extract_text()
-            print(f'Page #: {n}\n{__raw_text}')
+            # __raw_text = _pages[n].extract_text()
+            # print(f'Page #: {n}\n{__raw_text}')
 
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
@@ -141,7 +141,6 @@ class PDF():
                 output_f = output_f[:-2]
                 output_f = '/'.join(output_f)
                 output_f = f'{output_f}/{self.editf_id.text()} {self.editf_fn.text()}'
-                print(output_f)
                 os.rename(self.working_folder,output_f)
                 self.crud_read.setDisabled(True)
                 self.crud_create.setDisabled(True)
