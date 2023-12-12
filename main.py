@@ -198,9 +198,6 @@ class Main(QMainWindow):
 
         self.crud_read.setDisabled(False)
         self.crud_auto.setDisabled(False)
-        
-        try: print(self.workspace)
-        except: pass
 
         self.flist()
 
@@ -238,6 +235,7 @@ class Main(QMainWindow):
                 self.working_folder = self.tree[self.counter]
                 PDF.pdf_srch_text(self)
 
+
             self.editf_id.setText(self.result_id)
             self.editf_fn.setText(self.result_fn.upper())
 
@@ -246,11 +244,12 @@ class Main(QMainWindow):
 
             self.textarea.appendPlainText(f'\n{self.result_id} {self.result_fn} expediente listo para procesar...')
         except IndexError as e:
-            notification.notify(
-                title= f'DeskPy',
-                message= f'L251 Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',
-                timeout= 5
-            )
+            if self.bt_sender != 'Uno':
+                notification.notify(
+                    title = f'DeskPy',
+                    message = f'L251 Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',
+                    timeout = 5
+                )
         except Exception as e:
             notification.notify(
                 title= f'DeskPy',

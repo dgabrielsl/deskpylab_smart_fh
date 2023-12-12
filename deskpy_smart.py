@@ -34,63 +34,35 @@ class PDF():
             # print(f'Page #: {n}\n{__raw_text}\n\n\n')
 
             # INFORMED CONSENT.
-            if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'):
-                print('F: INFORMED CONSENT')
-                self.is_doc_cons.append(n)
-            elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'):
-                print('F: INFORMED CONSENT')
-                self.is_doc_cons.append(n)
+            if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
+            elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'): self.is_doc_cons.append(n)
 
             # CONTRACT.
-            elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'):
-                print('F: CONTRACT')
-                self.is_doc_cntr.append(n)
-            elif _raw_text.__contains__('presente contrato') and _raw_text.__contains__('respectivo certificado') and _raw_text.__contains__('forma definitiva') and _raw_text.__contains__('intereses correspondientes'):
-                print('F: CONTRACT')
-                self.is_doc_cntr.append(n)
-            elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'):
-                print('F: CONTRACT')
-                self.is_doc_cntr.append(n)
-            elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'):
-                print('F: CONTRACT')
-                self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'): self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('presente contrato') and _raw_text.__contains__('respectivo certificado') and _raw_text.__contains__('forma definitiva') and _raw_text.__contains__('intereses correspondientes'): self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'): self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'): self.is_doc_cntr.append(n)
 
             # KYC.
             elif _raw_text.__contains__('formulario') and _raw_text.__contains__('conozca a su cliente'):
-                print('F: KYC')
                 self.is_doc_fkyc.append(n)
                 self._data_set_from_kyc = _pages[n].extract_text().replace('\xa0','').split('\n')
-            elif _raw_text.__contains__('declaro') and _raw_text.__contains__('juramento') and _raw_text.__contains__('todas las consecuencias') and _raw_text.__contains__('expresamente acepto que'):
-                print('F: KYC')
-                self.is_doc_fkyc.append(n)
-            elif _raw_text.__contains__('se hace constar que') and _raw_text.__contains__('puede llenar') and _raw_text.__contains__('no gestionar'):
-                print('F: KYC')
-                self.is_doc_fkyc.append(n)
+            elif _raw_text.__contains__('declaro') and _raw_text.__contains__('juramento') and _raw_text.__contains__('todas las consecuencias') and _raw_text.__contains__('expresamente acepto que'): self.is_doc_fkyc.append(n)
+            elif _raw_text.__contains__('se hace constar que') and _raw_text.__contains__('puede llenar') and _raw_text.__contains__('no gestionar'): self.is_doc_fkyc.append(n)
 
             # CICAC
             elif _raw_text.__contains__('consulta de datos') and _raw_text.__contains__('expediente del centro') and _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac'):
-                print('F: CICAC')
                 self.is_doc_ccac.append(n)
                 self._data_set_from_cicac = _pages[n].extract_text().replace('\xa0','').split('\n')
-            elif _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac') and _raw_text.__contains__('yo,') and _raw_text.__contains__('firma'):
-                print('F: CICAC')
-                self.is_doc_ccac.append(n)
+            elif _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac') and _raw_text.__contains__('yo,') and _raw_text.__contains__('firma'): self.is_doc_ccac.append(n)
 
             # SIGN CERTIFICATION
-            elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'):
-                print('F: SIGN CERTIFICATION')
-                self.is_doc_scrt.append(n)
-            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('contenido a firmar') and _raw_text.__contains__('url'):
-                print('F: SIGN CERTIFICATION')
-                self.is_doc_scrt.append(n)
-            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'):
-                print('F: SIGN CERTIFICATION')
-                self.is_doc_scrt.append(n)
+            elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'): self.is_doc_scrt.append(n)
+            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('contenido a firmar') and _raw_text.__contains__('url'): self.is_doc_scrt.append(n)
+            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'): self.is_doc_scrt.append(n)
 
             # UNKNOWN PAGES.
-            else:
-                print('F: UNKNOWN PAGES')
-                self.is_doc_unkn.append(n)
+            else: self.is_doc_unkn.append(n)
 
         try:
             for kt in self._data_set_from_cicac:
@@ -113,12 +85,9 @@ class PDF():
             self.result_fn = self.result_fn.split(' ')
 
         except AttributeError:
-            for line in self._data_set_from_kyc:
-                print(line)
-
             for kt in self._data_set_from_kyc:
                 _kt = kt.lower()
-                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
+                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa') or _kt.__contains__('inversión'):
                     self._data_set_from_kyc = kt
                     break
 
@@ -145,8 +114,7 @@ class PDF():
             for string in self._data_set_from_kyc:
                 if string.strip() != '': self.result_fn.append(string)
 
-        except IndexError:
-            self.result_fn = []
+        except IndexError: self.result_fn = []
 
         try:
             sz = len(self.result_fn)
@@ -156,7 +124,9 @@ class PDF():
             elif sz > 4:
                 self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
                 self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
-        except: pass
+        except:
+            self.result_fn = 'no-id'
+            self.result_fn = 'no-fname'
 
         _pdf.close()
 
