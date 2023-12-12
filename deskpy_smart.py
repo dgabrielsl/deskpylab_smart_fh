@@ -15,6 +15,8 @@ class PDF():
 
         self.subtree = os.listdir(self.working_folder)
 
+        self.readable_doc_c2 = False
+
         for st in self.subtree:
             _st = st.lower()
             if _st.__contains__('aff'):
@@ -28,10 +30,6 @@ class PDF():
         for n in range(_length):
             _raw_text = _pages[n].extract_text().replace('\n',' ')
             _raw_text = _raw_text.lower()
-
-            # It is only displayed in a test environment (by console).
-            # __raw_text = _pages[n].extract_text()
-            # print(f'Page #: {n}\n{__raw_text}')
 
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
@@ -47,6 +45,7 @@ class PDF():
             elif _raw_text.__contains__('formulario') and _raw_text.__contains__('conozca a su cliente'):
                 self.is_doc_fkyc.append(n)
                 self._data_set_from_kyc = _pages[n].extract_text().replace('\xa0','').split('\n')
+
             elif _raw_text.__contains__('declaro') and _raw_text.__contains__('juramento') and _raw_text.__contains__('todas las consecuencias') and _raw_text.__contains__('expresamente acepto que'): self.is_doc_fkyc.append(n)
             elif _raw_text.__contains__('se hace constar que') and _raw_text.__contains__('puede llenar') and _raw_text.__contains__('no gestionar'): self.is_doc_fkyc.append(n)
 
@@ -54,8 +53,12 @@ class PDF():
             elif _raw_text.__contains__('consulta de datos') and _raw_text.__contains__('expediente del centro') and _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac'):
                 self.is_doc_ccac.append(n)
                 self._data_set_from_cicac = _pages[n].extract_text().replace('\xa0','').split('\n')
+
             elif _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac') and _raw_text.__contains__('yo,') and _raw_text.__contains__('firma'):
                 self.is_doc_ccac.append(n)
+                self._data_set_from_cicac = _pages[n].extract_text().replace('\xa0','').split('\n')
+
+                self.readable_doc_c2 = True
 
             # SIGN CERTIFICATION
             elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'): self.is_doc_scrt.append(n)
@@ -65,64 +68,75 @@ class PDF():
             # UNKNOWN PAGES.
             else: self.is_doc_unkn.append(n)
 
-        try:
-            for kt in self._data_set_from_cicac:
-                _kt = kt.lower()
-                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
-                    self._data_set_from_cicac = kt
-                    break
+        if not self.readable_doc_c2:
+            try:
+                for kt in self._data_set_from_cicac:
+                    _kt = kt.lower()
+                    if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
+                        self._data_set_from_cicac = kt
+                        break
 
-            self._data_set_from_cicac = self._data_set_from_cicac.split(',')
-            self._data_set_from_cicac[0] = self._data_set_from_cicac[0].replace('Yo ','').replace('yo ','')
+                self._data_set_from_cicac = self._data_set_from_cicac.split(',')
+                self._data_set_from_cicac[0] = self._data_set_from_cicac[0].replace('Yo ','').replace('yo ','')
 
-            self.result_id = ''
+                self.result_id = ''
 
-            for char in self._data_set_from_cicac[1]:
-                n = char.isnumeric()
-                if n: self.result_id += char
+                for char in self._data_set_from_cicac[1]:
+                    n = char.isnumeric()
+                    if n: self.result_id += char
 
-            self.result_fn = self._data_set_from_cicac[0]
-            self.result_fn = self.result_fn.upper().replace('  ',' ')
+                self.result_fn = self._data_set_from_cicac[0]
+                self.result_fn = self.result_fn.upper().replace('  ',' ')
+                self.result_fn = self.result_fn.split(' ')
+
+            except:
+                for kt in self._data_set_from_kyc:
+                    _kt = kt.lower()
+                    if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
+                        self._data_set_from_kyc = kt
+                        break
+
+                self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
+                self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
+                self._data_set_from_kyc = self._data_set_from_kyc[1]
+                self._data_set_from_kyc = self._data_set_from_kyc.lower()
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
+
+                for rd in self._data_set_from_kyc:
+                    x = re.search(r'\d{9,}', rd)
+                    if x:
+                        self.result_id = rd
+                        break
+
+                self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
+                self._data_set_from_kyc = self._data_set_from_kyc[0]
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
+                self._data_set_from_kyc = self._data_set_from_kyc[1:]
+
+                self.result_fn = []
+
+                for string in self._data_set_from_kyc:
+                    if string.strip() != '': self.result_fn.append(string)
+        else:
+            self.result_fn = f'{self._data_set_from_cicac[2]} {self._data_set_from_cicac[3]}'
             self.result_fn = self.result_fn.split(' ')
+            self.result_id = self._data_set_from_cicac[5]
+            self.result_id = self.result_id.split(' ')
+            self.result_id = self.result_id[0]
 
-        except AttributeError:
-            for kt in self._data_set_from_kyc:
-                _kt = kt.lower()
-                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
-                    self._data_set_from_kyc = kt
-                    break
+            print(self.result_fn)
+            print(self.result_id)
 
-            self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
-            self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
-            self._data_set_from_kyc = self._data_set_from_kyc[1]
-            self._data_set_from_kyc = self._data_set_from_kyc.lower()
-            self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
-
-            for rd in self._data_set_from_kyc:
-                x = re.search(r'\d{9,}', rd)
-                if x:
-                    self.result_id = rd
-                    break
-
-            self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
-            self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
-            self._data_set_from_kyc = self._data_set_from_kyc[0]
-            self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
-            self._data_set_from_kyc = self._data_set_from_kyc[1:]
-
-            self.result_fn = []
-
-            for string in self._data_set_from_kyc:
-                if string.strip() != '': self.result_fn.append(string)
-
+        # try:
         sz = len(self.result_fn)
-
         if sz == 2: self.result_fn = self.result_fn.reverse()
         elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
         elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
         elif sz > 4:
             self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
             self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
+        # except Exception as e: print(139, e)
 
         _pdf.close()
 
