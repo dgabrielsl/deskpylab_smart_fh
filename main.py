@@ -84,11 +84,6 @@ class Main(QMainWindow):
         self.one_fldr.setCursor(Qt.CursorShape.PointingHandCursor)
         self.one_fldr.clicked.connect(self.filedialog)
 
-        # self.mul_fldr = QPushButton('Grupo')
-        # self.mul_fldr.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder)))
-        # self.mul_fldr.setCursor(Qt.CursorShape.PointingHandCursor)
-        # self.mul_fldr.clicked.connect(self.filedialog)
-
         self.sys_lnch = QPushButton('Todo')
         self.sys_lnch.setIcon(QIcon(self.style().standardIcon(QStyle.StandardPixmap.SP_FileDialogNewFolder)))
         self.sys_lnch.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -96,7 +91,6 @@ class Main(QMainWindow):
 
         wrap_1 = QHBoxLayout()
         wrap_1.addWidget(self.one_fldr)
-        # wrap_1.addWidget(self.mul_fldr)
         wrap_1.addWidget(self.sys_lnch)
         wrap_1.setContentsMargins(0,5,0,10)
 
@@ -119,7 +113,6 @@ class Main(QMainWindow):
         self.editf_fn_bt.clicked.connect(self.clear_field_fn)
 
         self.one_fldr.setStyleSheet('padding: 12px 5px;')
-        # self.mul_fldr.setStyleSheet('padding: 12px 5px;')
         self.sys_lnch.setStyleSheet('padding: 12px 5px;')
 
         self.editf_id_bt.setStyleSheet('background: none; border: none;')
@@ -221,9 +214,9 @@ class Main(QMainWindow):
 
         except Exception as e:
             notification.notify(
-                title =f'DeskPy',
-                message =f'L228 Hint: {e.__class__}\nLa ruta o carpeta a escanear no existe o no ha sido configurada, por favor configure una ruta válida.',
-                timeout=5
+                title = f'DeskPy',
+                message = f'Hint: {e.__class__}\nLa ruta o carpeta a escanear no existe o no ha sido configurada, por favor configure una ruta válida.',
+                timeout = 5
             )
 
     def read_next(self):
@@ -235,7 +228,6 @@ class Main(QMainWindow):
                 self.working_folder = self.tree[self.counter]
                 PDF.pdf_srch_text(self)
 
-
             self.editf_id.setText(self.result_id)
             self.editf_fn.setText(self.result_fn.upper())
 
@@ -244,17 +236,16 @@ class Main(QMainWindow):
 
             self.textarea.appendPlainText(f'\n{self.result_id} {self.result_fn} expediente listo para procesar...')
         except IndexError as e:
-            if self.bt_sender != 'Uno':
-                notification.notify(
-                    title = f'DeskPy',
-                    message = f'L251 Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',
-                    timeout = 5
-                )
+            notification.notify(
+                title = f'DeskPy',
+                message = f'Hint: {e.__class__}\nNo hay más carpetas por procesar en el directorio {self.sys_path.text()}.',
+                timeout = 5
+            )
         except Exception as e:
             notification.notify(
-                title= f'DeskPy',
-                message= f'L257 Hint: {e.__class__}\n{e}.',
-                timeout= 5
+                title = f'DeskPy',
+                message = f'Hint: {e.__class__}\n{e}.',
+                timeout = 5
             )
 
     def fitem(self):
@@ -291,7 +282,7 @@ class Main(QMainWindow):
                     self.crud_auto.setDisabled(True)
                     notification.notify(
                         title = f'DeskPy',
-                        message = 'L295\nNo hay más carpetas por procesar.',
+                        message = 'No hay más carpetas por procesar.',
                         timeout = 5
                     )
             except:

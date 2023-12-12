@@ -31,7 +31,7 @@ class PDF():
 
             # It is only displayed in a test environment (by console).
             # __raw_text = _pages[n].extract_text()
-            # print(f'Page #: {n}\n{__raw_text}\n\n\n')
+            # print(f'Page #: {n}\n{__raw_text}')
 
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
@@ -54,7 +54,8 @@ class PDF():
             elif _raw_text.__contains__('consulta de datos') and _raw_text.__contains__('expediente del centro') and _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac'):
                 self.is_doc_ccac.append(n)
                 self._data_set_from_cicac = _pages[n].extract_text().replace('\xa0','').split('\n')
-            elif _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac') and _raw_text.__contains__('yo,') and _raw_text.__contains__('firma'): self.is_doc_ccac.append(n)
+            elif _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac') and _raw_text.__contains__('yo,') and _raw_text.__contains__('firma'):
+                self.is_doc_ccac.append(n)
 
             # SIGN CERTIFICATION
             elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'): self.is_doc_scrt.append(n)
@@ -87,7 +88,7 @@ class PDF():
         except AttributeError:
             for kt in self._data_set_from_kyc:
                 _kt = kt.lower()
-                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa') or _kt.__contains__('inversión'):
+                if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
                     self._data_set_from_kyc = kt
                     break
 
@@ -114,19 +115,14 @@ class PDF():
             for string in self._data_set_from_kyc:
                 if string.strip() != '': self.result_fn.append(string)
 
-        except IndexError: self.result_fn = []
+        sz = len(self.result_fn)
 
-        try:
-            sz = len(self.result_fn)
-            if sz == 2: self.result_fn = self.result_fn.reverse()
-            elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
-            elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
-            elif sz > 4:
-                self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
-                self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
-        except:
-            self.result_fn = 'no-id'
-            self.result_fn = 'no-fname'
+        if sz == 2: self.result_fn = self.result_fn.reverse()
+        elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
+        elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
+        elif sz > 4:
+            self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
+            self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
 
         _pdf.close()
 
@@ -151,7 +147,7 @@ class PDF():
                 self.crud_auto.setDisabled(True)
                 notification.notify(
                     title = f'DeskPy',
-                    message = f'L150\nExpediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',
+                    message = f'Expediente "{self.editf_id.text()} {self.editf_fn.text()}" completado.',
                     timeout = 5
                 )
             elif self.bt_sender == 'Todo':
@@ -160,6 +156,6 @@ class PDF():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L159 Hint: {e.__class__}\n.Function: def app_deploy(self)\nL159\nProcessing: os.rename(self.working_folder,output_f)',
+                message = f'Hint: {e.__class__}\n.Function: def app_deploy(self)\nProcessing: os.rename(self.working_folder,output_f)',
                 timeout = 5
             )

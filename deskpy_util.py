@@ -40,28 +40,28 @@ class Util():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L43 Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "0. OTROS DOCUMENTOS"',
+                message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "0. OTROS DOCUMENTOS"',
                 timeout = 5)
 
         try: os.makedirs(f'{self.working_folder}/1. INFORMACIÓN GENERAL')
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L50 Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "1. INFORMACIÓN GENERAL"',
+                message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "1. INFORMACIÓN GENERAL"',
                 timeout = 5)
 
         try: os.makedirs(f'{self.working_folder}/2. INFORMACIÓN PRODUCTO')
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L57 Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "2. INFORMACIÓN PRODUCTO"',
+                message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "2. INFORMACIÓN PRODUCTO"',
                 timeout = 5)
 
         try: os.makedirs(f'{self.working_folder}/3. INFORMACIÓN FINANCIERA')
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L64 Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "3. INFORMACIÓN FINANCIERA"',
+                message = f'Hint: {e.__class__}\n.Function: def build_up_folders(self)\nDeskPy raised error while building up folder: "3. INFORMACIÓN FINANCIERA"',
                 timeout = 5)
 
     def pdf_make_merge(self):
@@ -127,7 +127,7 @@ class Util():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L130 Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_fkyc',
+                message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_fkyc',
                 timeout = 5
             )
 
@@ -142,7 +142,7 @@ class Util():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L145 Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_ccac',
+                message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_ccac',
                 timeout = 5
             )
 
@@ -157,7 +157,7 @@ class Util():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L160 Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cons',
+                message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cons',
                 timeout = 5
             )
 
@@ -172,7 +172,7 @@ class Util():
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',
-                message = f'L175 Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cntr',
+                message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cntr',
                 timeout = 5
             )
 
@@ -193,7 +193,7 @@ class Util():
             except Exception as e:
                 notification.notify(
                     title = f'DeskPy',
-                    message = f'L196 Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_unkn',
+                    message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_unkn',
                     timeout = 5
                 )
 
