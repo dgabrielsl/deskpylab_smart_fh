@@ -119,16 +119,19 @@ class PDF():
                 for string in self._data_set_from_kyc:
                     if string.strip() != '': self.result_fn.append(string)
         else:
-            self.result_fn = f'{self._data_set_from_cicac[2]} {self._data_set_from_cicac[3]}'
+            for line in self._data_set_from_cicac:
+                print(line)
+
+            self.result_fn = f'{self._data_set_from_cicac[17]} {self._data_set_from_cicac[18]}'
             self.result_fn = self.result_fn.split(' ')
-            self.result_id = self._data_set_from_cicac[5]
+            self.result_id = self._data_set_from_cicac[20]
             self.result_id = self.result_id.split(' ')
             self.result_id = self.result_id[0]
 
             print(self.result_fn)
             print(self.result_id)
 
-        # try:
+        try:
         sz = len(self.result_fn)
         if sz == 2: self.result_fn = self.result_fn.reverse()
         elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
@@ -136,7 +139,7 @@ class PDF():
         elif sz > 4:
             self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
             self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
-        # except Exception as e: print(139, e)
+        except Exception as e: print(e)
 
         _pdf.close()
 
