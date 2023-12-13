@@ -132,20 +132,23 @@ class PDF():
             print(self.result_id)
 
         try:
-        sz = len(self.result_fn)
-        if sz == 2: self.result_fn = self.result_fn.reverse()
-        elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
-        elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
-        elif sz > 4:
-            self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
-            self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
+            sz = len(self.result_fn)
+            if sz == 2: self.result_fn = self.result_fn.reverse()
+            elif sz == 3: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]}'
+            elif sz == 4: self.result_fn = f'{self.result_fn[-2]} {self.result_fn[-1]} {self.result_fn[0]} {self.result_fn[1]}'
+            elif sz > 4:
+                self.result_fn = f'{self.result_fn[:-2]} {self.result_fn[-2]} {self.result_fn[-1]}'
+                self.result_fn = self.result_fn.replace('[','').replace(']','').replace(',','').replace("'",'')
         except Exception as e: print(e)
 
         _pdf.close()
 
     def app_deploy(self):
-        self.id = self.editf_id.text()
-        self.fn = self.editf_fn.text()
+        try: self.id = self.editf_id.text()
+        except: print('Hint: self.id = self.editf_id.text()')
+
+        try: self.fn = self.editf_fn.text()
+        except: print('Hint: self.id = self.editf_fn.text()')
 
         Util.pdf_from_img(self)
         Util.build_up_folders(self)
