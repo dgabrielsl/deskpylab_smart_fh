@@ -132,13 +132,14 @@ class Util():
             )
 
         try:
-            _writer = PdfWriter()
-            for p in self.is_doc_ccac:
-                _writer.add_page(_reader.pages[p])
-                _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/CICAC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
-                with open(_output,'wb') as f:
-                    _writer.write(f)
-                    f.close()
+            if len(self.is_doc_ccac) > 2:
+                _writer = PdfWriter()
+                for p in self.is_doc_ccac:
+                    _writer.add_page(_reader.pages[p])
+                    _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/CICAC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
+                    with open(_output,'wb') as f:
+                        _writer.write(f)
+                        f.close()
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',

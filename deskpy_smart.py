@@ -31,15 +31,25 @@ class PDF():
             _raw_text = _pages[n].extract_text().replace('\n',' ')
             _raw_text = _raw_text.lower()
 
+            def test():
+                show_of_text = _pages[n].extract_text().lower().split('\n')
+                print(n)
+                for line in show_of_text:
+                    print(line)
+                print('\n\n\n')
+                os.system('pause')
+
             # INFORMED CONSENT.
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'): self.is_doc_cons.append(n)
+            elif _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('h)') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
 
             # CONTRACT.
             elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('presente contrato') and _raw_text.__contains__('respectivo certificado') and _raw_text.__contains__('forma definitiva') and _raw_text.__contains__('intereses correspondientes'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'): self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('contrato') and _raw_text.__contains__('cuenta smart') and _raw_text.__contains__('certificados') and _raw_text.__contains__('expresa e'): self.is_doc_cntr.append(n)
 
             # KYC.
             elif _raw_text.__contains__('formulario') and _raw_text.__contains__('conozca a su cliente'):
@@ -48,6 +58,7 @@ class PDF():
 
             elif _raw_text.__contains__('declaro') and _raw_text.__contains__('juramento') and _raw_text.__contains__('todas las consecuencias') and _raw_text.__contains__('expresamente acepto que'): self.is_doc_fkyc.append(n)
             elif _raw_text.__contains__('se hace constar que') and _raw_text.__contains__('puede llenar') and _raw_text.__contains__('no gestionar'): self.is_doc_fkyc.append(n)
+            elif _raw_text.__contains__('fatca') and _raw_text.__contains__('favor completar') and _raw_text.__contains__('y firmar') and _raw_text.__contains__('llenar este formulario') and _raw_text.__contains__('expresamente acepto'): self.is_doc_fkyc.append(n)
 
             # CICAC
             elif _raw_text.__contains__('consulta de datos') and _raw_text.__contains__('expediente del centro') and _raw_text.__contains__('conozca a su cliente') and _raw_text.__contains__('cicac'):
@@ -118,7 +129,7 @@ class PDF():
 
                 for string in self._data_set_from_kyc:
                     if string.strip() != '': self.result_fn.append(string)
-        else:
+        elif self.readable_doc_c2:
             for line in self._data_set_from_cicac:
                 print(line)
 
@@ -128,8 +139,7 @@ class PDF():
             self.result_id = self.result_id.split(' ')
             self.result_id = self.result_id[0]
 
-            print(self.result_fn)
-            print(self.result_id)
+        _pdf.close()
 
         try:
             sz = len(self.result_fn)
