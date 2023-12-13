@@ -198,8 +198,10 @@ class Util():
                     timeout = 5
                 )
 
-        try: os.rename(self.aff,f'{self.working_folder}/0. OTROS DOCUMENTOS/KIT {self.editf_id.text()} {self.editf_fn.text()}.pdf')
-        except Exception as e: print(e)
+        try:
+            self._pdf.close()
+            os.rename(self.aff,f'{self.working_folder}/0. OTROS DOCUMENTOS/KIT {self.editf_id.text()} {self.editf_fn.text()}.pdf')
+        except Exception as e: print(f'Hint: {e}\nAction: os.rename(self.aff)')
 
         self.aux_a = 1
         self.aux_b = 1
