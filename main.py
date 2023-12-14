@@ -297,6 +297,7 @@ class Main(QMainWindow):
             self.crud_read.click()
             self.crud_create.click()
             if len(self.tree) == self.counter: break
+            if self.editf_id.text() == '' or self.editf_fn.text() == '': break
 
     def clear_field_id(self):
         self.editf_id.setText('')
