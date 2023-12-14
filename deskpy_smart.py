@@ -40,8 +40,8 @@ class PDF():
             # CONTRACT.
             elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('presente contrato') and _raw_text.__contains__('respectivo certificado') and _raw_text.__contains__('forma definitiva') and _raw_text.__contains__('intereses correspondientes'): self.is_doc_cntr.append(n)
-            elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'): self.is_doc_cntr.append(n); print(1)
-            elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'): self.is_doc_cntr.append(n); print(2)
+            elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'): self.is_doc_cntr.append(n)
+            elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('contrato') and _raw_text.__contains__('cuenta smart') and _raw_text.__contains__('certificados') and _raw_text.__contains__('expresa e'): self.is_doc_cntr.append(n)
 
             # KYC.
@@ -67,85 +67,68 @@ class PDF():
             # SIGN CERTIFICATION
             elif _raw_text.__contains__('consta la siguiente') and _raw_text.__contains__('generada a partir de la firma') and _raw_text.__contains__('para verificar la identidad') and _raw_text.__contains__('prueba documental'): self.is_doc_scrt.append(n)
             elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('contenido a firmar') and _raw_text.__contains__('url'): self.is_doc_scrt.append(n)
-            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'):
-                self.is_doc_scrt.append(n)
-                self._data_set_from_signc2 = _pages[n].extract_text().split('\n')
-                self.result_fn = self._data_set_from_signc2[0]
-
-                try:
-                    if self.result_fn.__contains__(' - '):
-                        self.result_fn = self.result_fn.split(' - ')
-
-                        self.result_id = self.result_fn[0]
-                        self.result_fn = self.result_fn[1]
-                        self.result_fn = self.result_fn.split(' ')
-
-                        self.readable_doc_c2 = False
-                        self.fields_aux_mode = True
-
-                except: print('# SIGN CERTIFICATION // self.result_id & self.result_fn')
+            elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'): self.is_doc_scrt.append(n)
 
             # UNKNOWN PAGES.
             else: self.is_doc_unkn.append(n)
 
-        if not self.fields_aux_mode:
-            if not self.readable_doc_c2:
-                try:
-                    for kt in self._data_set_from_cicac:
-                        _kt = kt.lower()
-                        if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
-                            self._data_set_from_cicac = kt
-                            break
+        if not self.readable_doc_c2:
+            try:
+                for kt in self._data_set_from_cicac:
+                    _kt = kt.lower()
+                    if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
+                        self._data_set_from_cicac = kt
+                        break
 
-                    self._data_set_from_cicac = self._data_set_from_cicac.split(',')
-                    self._data_set_from_cicac[0] = self._data_set_from_cicac[0].replace('Yo ','').replace('yo ','')
+                self._data_set_from_cicac = self._data_set_from_cicac.split(',')
+                self._data_set_from_cicac[0] = self._data_set_from_cicac[0].replace('Yo ','').replace('yo ','')
 
-                    self.result_id = ''
+                self.result_id = ''
 
-                    for char in self._data_set_from_cicac[1]:
-                        n = char.isnumeric()
-                        if n: self.result_id += char
+                for char in self._data_set_from_cicac[1]:
+                    n = char.isnumeric()
+                    if n: self.result_id += char
 
-                    self.result_fn = self._data_set_from_cicac[0]
-                    self.result_fn = self.result_fn.upper().replace('  ',' ')
-                    self.result_fn = self.result_fn.split(' ')
-
-                except:
-                    for kt in self._data_set_from_kyc:
-                        _kt = kt.lower()
-                        if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
-                            self._data_set_from_kyc = kt
-                            break
-
-                    self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
-                    self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
-                    self._data_set_from_kyc = self._data_set_from_kyc[1]
-                    self._data_set_from_kyc = self._data_set_from_kyc.lower()
-                    self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
-
-                    for rd in self._data_set_from_kyc:
-                        x = re.search(r'\d{9,}', rd)
-                        if x:
-                            self.result_id = rd
-                            break
-
-                    self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
-                    self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
-                    self._data_set_from_kyc = self._data_set_from_kyc[0]
-                    self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
-                    self._data_set_from_kyc = self._data_set_from_kyc[1:]
-
-                    self.result_fn = []
-
-                    for string in self._data_set_from_kyc:
-                        if string.strip() != '': self.result_fn.append(string)
-
-            else:
-                self.result_fn = f'{self._data_set_from_cicac[17]} {self._data_set_from_cicac[18]}'
+                self.result_fn = self._data_set_from_cicac[0]
+                self.result_fn = self.result_fn.upper().replace('  ',' ')
                 self.result_fn = self.result_fn.split(' ')
-                self.result_id = self._data_set_from_cicac[20]
-                self.result_id = self.result_id.split(' ')
-                self.result_id = self.result_id[0]
+
+            except:
+                for kt in self._data_set_from_kyc:
+                    _kt = kt.lower()
+                    if _kt.__contains__('yo') and _kt.__contains__('portador de') and _kt.__contains__('de forma expresa'):
+                        self._data_set_from_kyc = kt
+                        break
+
+                self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
+                self._data_set_from_kyc = self._data_set_from_kyc.split('-20')
+                self._data_set_from_kyc = self._data_set_from_kyc[1]
+                self._data_set_from_kyc = self._data_set_from_kyc.lower()
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
+
+                for rd in self._data_set_from_kyc:
+                    x = re.search(r'\d{9,}', rd)
+                    if x:
+                        self.result_id = rd
+                        break
+
+                self._data_set_from_kyc = ' '.join(self._data_set_from_kyc)
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' 20')
+                self._data_set_from_kyc = self._data_set_from_kyc[0]
+                self._data_set_from_kyc = self._data_set_from_kyc.split(' ')
+                self._data_set_from_kyc = self._data_set_from_kyc[1:]
+
+                self.result_fn = []
+
+                for string in self._data_set_from_kyc:
+                    if string.strip() != '': self.result_fn.append(string)
+
+        else:
+            self.result_fn = f'{self._data_set_from_cicac[17]} {self._data_set_from_cicac[18]}'
+            self.result_fn = self.result_fn.split(' ')
+            self.result_id = self._data_set_from_cicac[20]
+            self.result_id = self.result_id.split(' ')
+            self.result_id = self.result_id[0]
 
         try:
             sz = len(self.result_fn)

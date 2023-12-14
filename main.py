@@ -245,6 +245,7 @@ class Main(QMainWindow):
             )
 
     def fitem(self):
+        if self.editf_id.text() != '' and self.editf_fn.text() != '':
             try:
                 subf = self.tree[self.counter]
                 subf = subf.split('/')
@@ -285,6 +286,11 @@ class Main(QMainWindow):
                 self.textarea.appendPlainText(
                     '***No hay más carpetas por procesar***'
                 )
+        else:
+            QMessageBox.warning(
+                self,
+                'DeskPy', f'El expediente no puede procesarse sin los datos de ID, nombre y apellidos del cliente\nPor favor, complete la información para continuar.',
+                QMessageBox.StandardButton.Close)
 
     def auto_pilot(self):
         while True:
