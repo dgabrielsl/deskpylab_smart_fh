@@ -180,7 +180,7 @@ class Util():
         if len(self.is_doc_unkn) > 2:
             QMessageBox.warning(
                 self,
-                'DeskPy', f'Some of the pages in the document could not be recognized by the program, yet it has been saved to protect the information and prevent loss of data (page or pages).\n\nWhen the document is not recognized, the signature certification is automatically added to it.',
+                'DeskPy', f'Aviso: algunas de las páginas ',
                 QMessageBox.StandardButton.Close)
 
             try:

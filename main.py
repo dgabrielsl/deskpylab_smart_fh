@@ -245,7 +245,7 @@ class Main(QMainWindow):
             )
 
     def fitem(self):
-        if self.editf_id.text() != '' and self.editf_fn.text() != '':
+        if True:
             try:
                 subf = self.tree[self.counter]
                 subf = subf.split('/')
@@ -293,9 +293,12 @@ class Main(QMainWindow):
                 QMessageBox.StandardButton.Close)
 
     def auto_pilot(self):
-        while True:
+        while self.counter <= len(self.tree):
             self.crud_read.click()
             self.crud_create.click()
+
+            print(f'len(self.tree): {len(self.tree)}, self.counter: {self.counter}')
+
             if len(self.tree) == self.counter: break
             if self.editf_id.text() == '' or self.editf_fn.text() == '': break
 

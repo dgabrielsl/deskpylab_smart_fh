@@ -36,6 +36,7 @@ class PDF():
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('h)') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
+            elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
 
             # CONTRACT.
             elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'): self.is_doc_cntr.append(n)
