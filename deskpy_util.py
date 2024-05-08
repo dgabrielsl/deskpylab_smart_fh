@@ -113,6 +113,7 @@ class Util():
             self.is_doc_ccac.append(n)
             self.is_doc_cons.append(n)
             self.is_doc_cntr.append(n)
+            self.is_doc_cicp.append(n)
             self.is_doc_unkn.append(n)
 
         try:
@@ -159,6 +160,21 @@ class Util():
             notification.notify(
                 title = f'DeskPy',
                 message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cons',
+                timeout = 5
+            )
+
+        try:
+            _writer = PdfWriter()
+            for p in self.is_doc_cicp:
+                _writer.add_page(_reader.pages[p])
+                _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/AUTORIZACIÓN CIC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
+                with open(_output,'wb') as f:
+                    _writer.write(f)
+                    f.close()
+        except Exception as e:
+            notification.notify(
+                title = f'DeskPy',
+                message = f'Hint: {e.__class__}\n.Function: def pdf_from_pdf(self)\nProcessing: self.is_doc_cicp',
                 timeout = 5
             )
 
