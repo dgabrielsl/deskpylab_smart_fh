@@ -294,13 +294,22 @@ class Main(QMainWindow):
 
     def auto_pilot(self):
         while self.counter <= len(self.tree):
-            self.crud_read.click()
-            self.crud_create.click()
+            try:
+                self.crud_read.click()
 
-            print(f'len(self.tree): {len(self.tree)}, self.counter: {self.counter}')
+                if self.editf_id.text() == '' or self.editf_fn.text() == '':
+                    QMessageBox.warning(
+                        self,
+                        'DeskPy', f'Debe llenar los campos ID y NOMBRE del cliente de forma manual.',
+                        QMessageBox.StandardButton.Close)
+                    break
 
-            if len(self.tree) == self.counter: break
-            if self.editf_id.text() == '' or self.editf_fn.text() == '': break
+                self.crud_create.click()
+                if len(self.tree) == self.counter: break
+
+            except Exception as e:
+                print(e)
+                break
 
     def clear_field_id(self):
         self.editf_id.setText('')

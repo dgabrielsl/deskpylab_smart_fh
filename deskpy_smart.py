@@ -79,9 +79,7 @@ class PDF():
             elif _raw_text.__contains__('firmante') and _raw_text.__contains__('cado mediante') and _raw_text.__contains__('seguridad pin'): self.is_doc_scrt.append(n)
 
             # UNKNOWN PAGES.
-            else:
-                print(f'**********************************************************************************************************************************************\n{_raw_text}\n**********************************************************************************************************************************************\n\n')
-                self.is_doc_unkn.append(n)
+            else: self.is_doc_unkn.append(n)
 
         if not self.readable_doc_c2:
             try:
