@@ -118,7 +118,6 @@ class Util():
 
         try:
             _writer = PdfWriter()
-
             for p in self.is_doc_fkyc:
                 _writer.add_page(_reader.pages[p])
                 _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/KYC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
@@ -165,12 +164,13 @@ class Util():
 
         try:
             _writer = PdfWriter()
-            for p in self.is_doc_cicp:
-                _writer.add_page(_reader.pages[p])
-                _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/AUTORIZACIÓN CIC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
-                with open(_output,'wb') as f:
-                    _writer.write(f)
-                    f.close()
+            if len(self.is_doc_cicp) > 2:
+                for p in self.is_doc_cicp:
+                    _writer.add_page(_reader.pages[p])
+                    _output = f'{self.working_folder}/1. INFORMACIÓN GENERAL/AUTORIZACIÓN CIC {self.editf_id.text()} {self.editf_fn.text()}.pdf'
+                    with open(_output,'wb') as f:
+                        _writer.write(f)
+                        f.close()
         except Exception as e:
             notification.notify(
                 title = f'DeskPy',

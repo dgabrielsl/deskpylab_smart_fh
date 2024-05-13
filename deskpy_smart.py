@@ -40,6 +40,7 @@ class PDF():
             if _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('constan en este documento') and _raw_text.__contains__('me encuentro conforme') and _raw_text.__contains__('derecho a solicitar'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('empresas asociadas') and _raw_text.__contains__('base de datos'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('consentimiento') and _raw_text.__contains__('informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
+            elif _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('h)') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
 
             # CIC.
             elif _raw_text.__contains__('nombre del usuario') and _raw_text.__contains__('entidad que tramita') and _raw_text.__contains__('radicados') and _raw_text.__contains__('estime pertinentes') and _raw_text.__contains__('revocatoria de esta autorizaci') and _raw_text.__contains__('provocar su aplicaci'): self.is_doc_cicp.append(n)
@@ -48,7 +49,6 @@ class PDF():
             elif _raw_text.__contains__('virtud de lo indicado') and _raw_text.__contains__('mandato es la apertura') and _raw_text.__contains__('depositar el dinero correspondiente') and _raw_text.__contains__('forma anticipada') and _raw_text.__contains__('el proceso operativo y'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('objeto del presente mandato') and _raw_text.__contains__('generar y custodiar los valores') and _raw_text.__contains__('poder especial') and _raw_text.__contains__('la firma de este documento'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('presente contrato') and _raw_text.__contains__('respectivo certificado') and _raw_text.__contains__('forma definitiva') and _raw_text.__contains__('intereses correspondientes'): self.is_doc_cntr.append(n)
-            elif _raw_text.__contains__('consentimiento informado') and _raw_text.__contains__('para lo dispuesto') and _raw_text.__contains__('h)') and _raw_text.__contains__('me encuentro conforme'): self.is_doc_cons.append(n)
             elif _raw_text.__contains__('contrato inversion smart') or _raw_text.__contains__('contrato inversión smart'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('quinta') and _raw_text.__contains__('octava') and _raw_text.__contains__('novena'): self.is_doc_cntr.append(n)
             elif _raw_text.__contains__('contrato') and _raw_text.__contains__('cuenta smart') and _raw_text.__contains__('certificados') and _raw_text.__contains__('expresa e'): self.is_doc_cntr.append(n)
